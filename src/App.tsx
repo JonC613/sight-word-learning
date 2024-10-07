@@ -38,16 +38,16 @@ const App: React.FC = () => {
 
   return (
     <FluentProvider theme={webLightTheme}>
-      <div className="App">
+      <div className="App" style={{ minHeight: '100vh', padding: '20px' }}>
         <header className="App-header">
-          <Text as="h1" block size={600} style={{ textAlign: 'center', marginBottom: '20px' }}>✨ Sight Word Learning ✨</Text>
+          <Text as="h1" block size={800} style={{ textAlign: 'center', marginBottom: '30px', color: '#ff6347', fontFamily: 'Comic Sans MS, sans-serif' }}>✨ Sight Word Learning Game ✨</Text>
           <WordDisplay word={currentWord} />
           <ControlButtons
             onCorrect={handleCorrect}
             onIncorrect={handleIncorrect}
             onRepeat={handleRepeat}
           />
-          <Text className="message" block style={{ textAlign: 'center', marginTop: '20px' }}>{message}</Text>
+          <Text className="message" block style={{ textAlign: 'center', marginTop: '30px', color: '#32cd32', fontSize: '2em', fontFamily: 'Comic Sans MS, sans-serif' }}>{message}</Text>
         </header>
       </div>
     </FluentProvider>
@@ -60,8 +60,8 @@ interface WordDisplayProps {
 
 const WordDisplay: React.FC<WordDisplayProps> = ({ word }) => {
   return (
-    <div className="word-container" style={{ textAlign: 'center', margin: '20px 0' }}>
-      <Text className="sight-word" size={500} style={{ display: 'inline-block', textAlign: 'center' }}>🌟 {word} 🌟</Text>
+    <div className="word-container" style={{ textAlign: 'center', margin: '40px 0' }}>
+      <Text className="sight-word" size={900} style={{ display: 'inline-block', textAlign: 'center', color: '#1e90ff', fontSize: '5em', fontFamily: 'Comic Sans MS, sans-serif', padding: '50px', borderRadius: '15px', boxShadow: '0px 0px 15px 5px rgba(0, 0, 0, 0.2)', minWidth: '600px' }}>🌟 {word} 🌟</Text>
     </div>
   );
 };
@@ -74,10 +74,10 @@ interface ControlButtonsProps {
 
 const ControlButtons: React.FC<ControlButtonsProps> = ({ onCorrect, onIncorrect, onRepeat }) => {
   return (
-    <div className="buttons" style={{ textAlign: 'center', marginTop: '20px' }}>
-      <Button appearance="primary" onClick={onCorrect}>Correct</Button>
-      <Button appearance="primary" onClick={onIncorrect} style={{ marginLeft: '10px' }}>Incorrect</Button>
-      <Button appearance="primary" onClick={onRepeat} style={{ marginLeft: '10px' }}>Repeat</Button>
+    <div className="buttons" style={{ textAlign: 'center', marginTop: '30px' }}>
+      <Button appearance="primary" onClick={onCorrect} style={{ fontSize: '1.5em', padding: '15px 25px', margin: '10px', backgroundColor: '#ff6347', color: 'white', borderRadius: '10px' }}>Correct</Button>
+      <Button appearance="primary" onClick={onIncorrect} style={{ fontSize: '1.5em', padding: '15px 25px', margin: '10px', backgroundColor: '#ff6347', color: 'white', borderRadius: '10px' }}>Incorrect</Button>
+      <Button appearance="primary" onClick={onRepeat} style={{ fontSize: '1.5em', padding: '15px 25px', margin: '10px', backgroundColor: '#ff6347', color: 'white', borderRadius: '10px' }}>Repeat</Button>
     </div>
   );
 };
