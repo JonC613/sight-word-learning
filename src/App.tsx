@@ -16,6 +16,7 @@ const App: React.FC = () => {
     setMessage('Great job!');
     if (currentIndex < words.length - 1) {
       setCurrentIndex(currentIndex + 1);
+      speakWord(words[currentIndex + 1]);
     } else {
       setMessage("You've finished all the words! Amazing work!");
     }
@@ -27,7 +28,11 @@ const App: React.FC = () => {
 
   const handleRepeat = (): void => {
     setMessage('');
-    const utterance = new SpeechSynthesisUtterance(currentWord);
+    speakWord(currentWord);
+  };
+
+  const speakWord = (word: string): void => {
+    const utterance = new SpeechSynthesisUtterance(word);
     window.speechSynthesis.speak(utterance);
   };
 
@@ -77,4 +82,4 @@ const ControlButtons: React.FC<ControlButtonsProps> = ({ onCorrect, onIncorrect,
   );
 };
 
-export default App; 
+export default App;
