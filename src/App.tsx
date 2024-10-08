@@ -3,7 +3,7 @@ import './App.css';
 import { FluentProvider, webLightTheme, Button, Text } from '@fluentui/react-components';
 
 let words: string[] = [
-  'is','off','got','had','did','the','fast','it','a','I','cut','at','let','his','sit','full','get','us','tell','its','has','if','hot'
+  'is','off','got','had','did','the','fast','it','a','I','cut','at','let','his','sit','full','get','us','tell','its','has','if',
 ];
 
 const App: React.FC = () => {
