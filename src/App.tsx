@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { FluentProvider, webLightTheme, Button, Text } from '@fluentui/react-components';
 
-const words: string[] = [
-  'the', 'and', 'a', 'to', 'in', 'is', 'you', 'that', 'it', 'of', 'for', 'on', 'are', 'as', 'with', 'his', 'they', 'I', 'at', 'be'
+let words: string[] = [
+  'is','off','got','had','did','the','fast','it','a','I','cut','at','let','his','sit','full','get','us','tell','its','has','if','hot'
 ];
 
 const App: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [message, setMessage] = useState<string>('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [retry, setRetry] = useState<boolean>(false);
+
+  useEffect(() => {
+    shuffleWords();
+  }, []);
+
+  const shuffleWords = (): void => {
+    words = words.sort(() => Math.random() - 0.5);
+  };
 
   const currentWord: string = words[currentIndex];
 
@@ -20,10 +30,12 @@ const App: React.FC = () => {
     } else {
       setMessage("You've finished all the words! Amazing work!");
     }
+    setRetry(false);
   };
 
   const handleIncorrect = (): void => {
     setMessage("That's okay, keep trying!");
+    setRetry(true);
   };
 
   const handleRepeat = (): void => {
