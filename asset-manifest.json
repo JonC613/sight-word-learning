@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/sight-word-learning/static/css/main.58c22bf8.css",
-    "main.js": "/sight-word-learning/static/js/main.522f3e8e.js",
+    "main.js": "/sight-word-learning/static/js/main.a3debd80.js",
     "static/js/453.0c442a20.chunk.js": "/sight-word-learning/static/js/453.0c442a20.chunk.js",
     "index.html": "/sight-word-learning/index.html",
     "main.58c22bf8.css.map": "/sight-word-learning/static/css/main.58c22bf8.css.map",
-    "main.522f3e8e.js.map": "/sight-word-learning/static/js/main.522f3e8e.js.map",
+    "main.a3debd80.js.map": "/sight-word-learning/static/js/main.a3debd80.js.map",
     "453.0c442a20.chunk.js.map": "/sight-word-learning/static/js/453.0c442a20.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.58c22bf8.css",
-    "static/js/main.522f3e8e.js"
+    "static/js/main.a3debd80.js"
   ]
 }
