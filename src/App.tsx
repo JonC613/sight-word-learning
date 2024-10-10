@@ -2,32 +2,34 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import { FluentProvider, webLightTheme, Button, Text } from '@fluentui/react-components';
 
-
-let words: string[] = ["is", "did", "a", "at", "got", "it", "its", "sit", "fast", "if", "off", "I", "get", "let", "tell", "had", "has", "his", "hot", "the", "cut", "full", "us", "best", "big", "but", "of", "red", "an", "and", "can", "in", "not", "on", "ran", "run", "ten", "no", "am", "him", "must", "for", "help", "pull", "stop", "up", "upon", "put", "seven", "into", "well", "went", "will", "to", "ask", "black", "drink", "pick", "like", "jump", "just", "said", "six", "yes", "you", "was"];
 const App: React.FC = () => {
+  const [words, setWords] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [message, setMessage] = useState<string>('');
   const [retry, setRetry] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!document.querySelector("script[src='https://code.responsivevoice.org/responsivevoice.js?key=0fwgflrW']")) {
-      loadResponsiveVoice();
-    }
-    shuffleWords();
+    fetchWords();
   }, []);
 
-  const shuffleWords = (): void => {
-    words = words.sort(() => Math.random() - 0.5);
+  const fetchWords = async (): Promise<void> => {
+    try {
+      const response = await fetch('/sight-word-learning/data/words.json');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json(); // Fetch directly as JSON
+      console.log('Parsed Data:', data);
+      if (!Array.isArray(data.words)) {
+        throw new Error('Expected an array of words');
+      }
+      setWords(data.words.sort(() => Math.random() - 0.5));
+    } catch (error) {
+      console.error('Error fetching words:', error);
+      setMessage('Error loading words, please try again later.');
+    }
   };
-
-  const loadResponsiveVoice = (): void => {
-    const script = document.createElement('script');
-    script.src = 'https://code.responsivevoice.org/responsivevoice.js?key=0fwgflrW';
-    script.async = true;
-    document.body.appendChild(script);
-  };
-
-  const currentWord: string = words[currentIndex];
+  const currentWord: string = words[currentIndex] || '';
 
   const handleCorrect = (): void => {
     setMessage('Great job!');
@@ -46,15 +48,12 @@ const App: React.FC = () => {
 
   const handleRepeat = (): void => {
     setMessage('');
-    speakWord(currentWord);
+    playAudio(currentWord);
   };
 
-  const speakWord = (word: string): void => {
-    if ((window as any).responsiveVoice) {
-      (window as any).responsiveVoice.speak(word, "US English Female");
-    } else {
-      console.error("ResponsiveVoice is not available.");
-    }
+  const playAudio = (word: string): void => {
+    const audio = new Audio(`/data/${word}.mp3`);
+    audio.play().catch((error) => console.error("Error playing audio: ", error));
   };
 
   return (
@@ -62,7 +61,11 @@ const App: React.FC = () => {
       <div className="App" style={{ minHeight: '100vh', padding: '20px' }}>
         <header className="App-header">
           <Text as="h1" block size={800} style={{ textAlign: 'center', marginBottom: '20px', color: '#ff6347', fontFamily: 'Comic Sans MS, sans-serif', fontSize: '2em' }}>✨ Sight Word Learning Game ✨</Text>
-          <WordDisplay word={currentWord} />
+          {words.length > 0 ? (
+            <WordDisplay word={currentWord} />
+          ) : (
+            <Text block style={{ textAlign: 'center' }}>Loading words...</Text>
+          )}
           <ControlButtons
             onCorrect={handleCorrect}
             onIncorrect={handleIncorrect}
@@ -82,7 +85,7 @@ interface WordDisplayProps {
 const WordDisplay: React.FC<WordDisplayProps> = ({ word }) => {
   return (
     <div className="word-container" style={{ textAlign: 'center', margin: '20px 0' }}>
-      <Text className="sight-word" size={900} style={{ display: 'inline-block', textAlign: 'center', color: '#1e90ff', fontSize: '3em', fontFamily: 'Comic Sans MS, sans-serif', padding: '20px', borderRadius: '15px', boxShadow: '0px 0px 15px 5px rgba(0, 0, 0, 0.2)', minWidth: '300px', minHeight: '150px', maxWidth: '90%', wordWrap: 'break-word' }}>🌟 {word} 🌟</Text>
+      <Text className="sight-word" size={900} style={{ display: 'inline-block', textAlign: 'center', color: '#1e90ff', fontSize: '3em', fontFamily: 'Comic Sans MS, sans-serif', padding: '20px', borderRadius: '15px', boxShadow: '0px 0px 15px 5px rgba(0, 0, 0, 0.2)', minWidth: '300px', minHeight: '150px', maxWidth: '90%', wordWrap: 'break-word' }}> {word} </Text>
     </div>
   );
 };
