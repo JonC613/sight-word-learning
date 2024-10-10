@@ -2,21 +2,29 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import { FluentProvider, webLightTheme, Button, Text } from '@fluentui/react-components';
 
-let words: string[] = [
-  'the', 'and', 'a', 'to', 'in', 'is', 'you', 'that', 'it', 'of', 'for', 'on', 'are', 'as', 'with', 'his', 'they', 'I', 'at', 'be'
-];
 
+let words: string[] = ["is", "did", "a", "at", "got", "it", "its", "sit", "fast", "if", "off", "I", "get", "let", "tell", "had", "has", "his", "hot", "the", "cut", "full", "us", "best", "big", "but", "of", "red", "an", "and", "can", "in", "not", "on", "ran", "run", "ten", "no", "am", "him", "must", "for", "help", "pull", "stop", "up", "upon", "put", "seven", "into", "well", "went", "will", "to", "ask", "black", "drink", "pick", "like", "jump", "just", "said", "six", "yes", "you", "was"];
 const App: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [message, setMessage] = useState<string>('');
   const [retry, setRetry] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!document.querySelector("script[src='https://code.responsivevoice.org/responsivevoice.js?key=0fwgflrW']")) {
+      loadResponsiveVoice();
+    }
     shuffleWords();
   }, []);
 
   const shuffleWords = (): void => {
     words = words.sort(() => Math.random() - 0.5);
+  };
+
+  const loadResponsiveVoice = (): void => {
+    const script = document.createElement('script');
+    script.src = 'https://code.responsivevoice.org/responsivevoice.js?key=0fwgflrW';
+    script.async = true;
+    document.body.appendChild(script);
   };
 
   const currentWord: string = words[currentIndex];
@@ -25,7 +33,6 @@ const App: React.FC = () => {
     setMessage('Great job!');
     if (currentIndex < words.length - 1) {
       setCurrentIndex(currentIndex + 1);
-      
     } else {
       setMessage("You've finished all the words! Amazing work!");
     }
@@ -43,8 +50,11 @@ const App: React.FC = () => {
   };
 
   const speakWord = (word: string): void => {
-    const utterance = new SpeechSynthesisUtterance(word);
-    window.speechSynthesis.speak(utterance);
+    if ((window as any).responsiveVoice) {
+      (window as any).responsiveVoice.speak(word, "US English Female");
+    } else {
+      console.error("ResponsiveVoice is not available.");
+    }
   };
 
   return (
